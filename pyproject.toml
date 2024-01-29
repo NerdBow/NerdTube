@@ -6,7 +6,10 @@ authors = ["NerdBow <108768934+NerdBow@users.noreply.github.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.12"
+pytube = "^15.0.0"
+customtkinter = "^5.2.2"
+ffmpeg-python = "^0.2.0"
 
 
 [build-system]
