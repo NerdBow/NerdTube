@@ -11,8 +11,12 @@ pytube = "^15.0.0"
 customtkinter = "^5.2.2"
 ffmpeg-python = "^0.2.0"
 pillow = "^10.2.0"
+black = "^24.1.1"
 
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 100
