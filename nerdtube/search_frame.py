@@ -13,9 +13,34 @@ class SearchFrame(customtkinter.CTkFrame):
         self.current_row = 0
         self.current_column = 0
 
-        self.search_bar = customtkinter.CTkEntry(master=self, placeholder_text="Search")
-        self.search_bar.grid(row=0, column=0, padx=20, pady=20, sticky="ew", columnspan=3, rowspan=3)
+
+        self.grid_columnconfigure((0), weight=1)
+        self.grid_rowconfigure((0), weight=1)
+
+        self.search_bar = customtkinter.CTkEntry(master=self, placeholder_text="Search", height=32)
+        self.search_bar.grid(row=0, column=0, padx=20, pady=20, sticky="new")
+
+        self.search_bar.bind("<Return>", command=self.search)
         pass
+
+    def search(self, event):
+        """
+        Function which is called when Enter is pressed on the search bar
+        Take current text in search bar and puts it through Pytube Search object
+
+        Parameters:
+        - event: event object for the search command (I never used it)
+        """
+
+        search_query = self.search_bar.get()
+
+        if search_query == "":
+            return
+        
+        search_object = Search(search_query)
+
+        print(f"Searching...\n{self.search_bar.get()}")
+        print(f"{search_object.results}")
 
     def append_result(self, result_object: YouTube) -> None:
         """
