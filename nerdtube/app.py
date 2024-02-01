@@ -19,7 +19,7 @@ class App(customtkinter.CTk):
 
         self.search_frame = SearchFrame(self)
         self.search_frame.grid(
-            row=0, column=0, padx=20, pady=20, columnspan=2, sticky="nwe"
+            row=0, column=0, padx=20, pady=20, columnspan=2, sticky="nwes"
         )
         pass
 
