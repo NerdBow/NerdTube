@@ -12,6 +12,7 @@ customtkinter = "^5.2.2"
 ffmpeg-python = "^0.2.0"
 pillow = "^10.2.0"
 black = "^24.1.1"
+aiohttp = "^3.9.3"
 
 
 [build-system]
