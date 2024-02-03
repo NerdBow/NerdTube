@@ -25,6 +25,9 @@ class SearchFrame(customtkinter.CTkFrame):
         self.video_display_frame.grid(row=1, column=0, padx=20, pady=20, sticky="nsew")
 
     def setup(self):
+        """
+        Setups the image dimensions of the videos to display
+        """
         self.video_display_frame.setup_image_dimensions()
 
     def search(self, event) -> None:
