@@ -22,9 +22,15 @@ class App(customtkinter.CTk):
         self.bind("<Configure>", self.resize)
 
     def setup(self):
+        """
+        Method to run any code that needs to be executed after instaciation of the instance
+        """
         self.search_frame.setup()
 
     def resize(self, event):
+        """
+        Method which is called when the window is resized
+        """
         self.search_frame.video_display_frame.resize_images()
         print("Resizing...")
 
