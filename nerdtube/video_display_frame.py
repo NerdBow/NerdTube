@@ -31,6 +31,9 @@ class VideoDisplayFrame(customtkinter.CTkScrollableFrame):
         print(f"Width: {self.winfo_width()} Height: {self.winfo_height()}")
 
     def resize_images(self):
+        """
+        Resizes the images of video thumbnails depending on the screen size
+        """
         # Only scales if there is a 10 pixel difference in the window difference
         if abs(self.image_width - self.winfo_width() // 3) < 25:
             return
