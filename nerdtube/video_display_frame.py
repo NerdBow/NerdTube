@@ -15,7 +15,7 @@ class VideoDisplayFrame(customtkinter.CTkScrollableFrame):
         self.image_height = 0
 
         self.video_images = []
-        self.video_labels = []
+        self.video_frames = []
 
     def setup_image_dimensions(self):
         """
@@ -40,8 +40,24 @@ class VideoDisplayFrame(customtkinter.CTkScrollableFrame):
 
         self.setup_image_dimensions()
 
-        for video in self.video_labels:
+        for video in self.video_images:
             video.cget("image").configure(size=(self.image_width, self.image_height))
+
+    def on_video_click(self, event, video_frame: customtkinter.CTkFrame):
+        """
+        Highlight video frame when the thumbnail is clicked
+
+        Parameters:
+        - event: The event object
+        - video_frame: The video frame of the clicked thumbnail
+        """
+
+        for frame in self.video_frames:
+            frame.configure(border_color="white")
+        
+        video_frame.configure(border_color=("#5CEEFF"))
+        print(event)
+        print(video_frame.winfo_children()[1].cget("text"))
 
     def add_videos(self, videos: list[YouTube]) -> None:
         """
@@ -54,14 +70,14 @@ class VideoDisplayFrame(customtkinter.CTkScrollableFrame):
         self.setup_image_dimensions()
 
         for index, video in enumerate(videos):
-            video_frame = customtkinter.CTkFrame(master=self)
+            video_frame = customtkinter.CTkFrame(master=self, border_width=2, border_color="white")
 
             image = Image.open(urlopen(video.thumbnail_url))  # Troll
             image_ctk = customtkinter.CTkImage(
                 light_image=image, dark_image=image, size=(self.image_width, self.image_height)
             )
-            label = customtkinter.CTkLabel(master=video_frame, image=image_ctk, text="")
-            label.grid(row=0, column=0, padx=2, pady=2)
+            thumbnail_label = customtkinter.CTkLabel(master=video_frame, image=image_ctk, text="")
+            thumbnail_label.grid(row=0, column=0, padx=2, pady=2)
 
             title_label = customtkinter.CTkLabel(
                 master=video_frame, text=video.title, wraplength=180
@@ -70,11 +86,18 @@ class VideoDisplayFrame(customtkinter.CTkScrollableFrame):
 
             video_frame.grid(row=index // 3, column=index % 3, padx=5, pady=5)
             print(f"Row: {index // 3} | Column: {index % 3}")
-            self.video_labels.append(label)
+
+            self.video_images.append(thumbnail_label)
+            self.video_frames.append(video_frame)
+
+            thumbnail_label.bind(
+                "<Button-1>",
+                command=lambda event, frame=video_frame: self.on_video_click(event, frame),
+            )
 
     def delete_videos(self) -> None:
         """
         Deletes all the videos label objects within a frame
         """
-        for video in self.video_labels:
+        for video in self.video_frames:
             video.destroy()
