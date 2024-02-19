@@ -1,14 +1,14 @@
-import customtkinter
+import customtkinter as ctk
 from pytube import Search
 from nerdtube.video_display_frame import VideoDisplayFrame
 
 
-class SearchFrame(customtkinter.CTkFrame):
+class SearchFrame(ctk.CTkFrame):
     """
     Frame to handle a search bar and search results
     """
 
-    def __init__(self, master: customtkinter.CTk) -> None:
+    def __init__(self, master: ctk.CTk) -> None:
         super().__init__(master)
 
         self.master = master
@@ -17,7 +17,7 @@ class SearchFrame(customtkinter.CTkFrame):
         self.grid_rowconfigure((0), weight=0)
         self.grid_rowconfigure((1), weight=1)
 
-        self.search_bar = customtkinter.CTkEntry(master=self, placeholder_text="Search", height=32)
+        self.search_bar = ctk.CTkEntry(master=self, placeholder_text="Search", height=32)
         self.search_bar.grid(row=0, column=0, padx=20, pady=20, sticky="new")
         self.search_bar.bind("<Return>", command=self.search)
 

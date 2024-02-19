@@ -1,11 +1,11 @@
-import customtkinter
+import customtkinter as ctk
 from pytube import YouTube
 from PIL import Image
 from urllib.request import urlopen
 
 
-class VideoDisplayFrame(customtkinter.CTkScrollableFrame):
-    def __init__(self, master: customtkinter.CTkFrame) -> None:
+class VideoDisplayFrame(ctk.CTkScrollableFrame):
+    def __init__(self, master: ctk.CTkFrame) -> None:
         super().__init__(master)
 
         self.grid_columnconfigure((0, 1, 2), weight=1)
@@ -43,7 +43,7 @@ class VideoDisplayFrame(customtkinter.CTkScrollableFrame):
         for video in self.video_images:
             video.cget("image").configure(size=(self.image_width, self.image_height))
 
-    def on_video_click(self, event, video_frame: customtkinter.CTkFrame):
+    def on_video_click(self, event, video_frame: ctk.CTkFrame):
         """
         Highlight video frame when the thumbnail is clicked
 
@@ -54,7 +54,7 @@ class VideoDisplayFrame(customtkinter.CTkScrollableFrame):
 
         for frame in self.video_frames:
             frame.configure(border_color="white")
-        
+
         video_frame.configure(border_color=("#5CEEFF"))
         print(event)
         print(video_frame.winfo_children()[1].cget("text"))
@@ -70,16 +70,16 @@ class VideoDisplayFrame(customtkinter.CTkScrollableFrame):
         self.setup_image_dimensions()
 
         for index, video in enumerate(videos):
-            video_frame = customtkinter.CTkFrame(master=self, border_width=2, border_color="white")
+            video_frame = ctk.CTkFrame(master=self, border_width=2, border_color="white")
 
             image = Image.open(urlopen(video.thumbnail_url))  # Troll
-            image_ctk = customtkinter.CTkImage(
+            image_ctk = ctk.CTkImage(
                 light_image=image, dark_image=image, size=(self.image_width, self.image_height)
             )
-            thumbnail_label = customtkinter.CTkLabel(master=video_frame, image=image_ctk, text="")
+            thumbnail_label = ctk.CTkLabel(master=video_frame, image=image_ctk, text="")
             thumbnail_label.grid(row=0, column=0, padx=2, pady=2)
 
-            title_label = customtkinter.CTkLabel(
+            title_label = ctk.CTkLabel(
                 master=video_frame, text=video.title, wraplength=180
             )
             title_label.grid(row=1, column=0, padx=2, pady=2)
