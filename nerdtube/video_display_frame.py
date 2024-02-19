@@ -3,6 +3,8 @@ from pytube import YouTube
 from PIL import Image
 from urllib.request import urlopen
 
+from nerdtube.video_frame import VideoFrame
+
 
 class VideoDisplayFrame(ctk.CTkScrollableFrame):
     def __init__(self, master: ctk.CTkFrame) -> None:
@@ -10,9 +12,6 @@ class VideoDisplayFrame(ctk.CTkScrollableFrame):
 
         self.grid_columnconfigure((0, 1, 2), weight=1)
         self.grid_rowconfigure((0, 1, 2, 3, 4, 5, 6), weight=1)
-
-        self.image_width = 0
-        self.image_height = 0
 
         self.video_images = []
         self.video_frames = []
@@ -23,10 +22,10 @@ class VideoDisplayFrame(ctk.CTkScrollableFrame):
         """
 
         # Math to fit the 3 videos per row to scale with the size of the screen
-        self.image_width = self.winfo_width() // 3
+        VideoFrame.image_width = self.winfo_width() // 3
 
         # Makes sure that the image is 16:9
-        self.image_height = self.image_width // 16 * 9
+        VideoFrame.image_height = VideoFrame.image_width // 16 * 9
 
         print(f"Width: {self.winfo_width()} Height: {self.winfo_height()}")
 
@@ -34,14 +33,16 @@ class VideoDisplayFrame(ctk.CTkScrollableFrame):
         """
         Resizes the images of video thumbnails depending on the screen size
         """
-        # Only scales if there is a 10 pixel difference in the window difference
-        if abs(self.image_width - self.winfo_width() // 3) < 25:
+        # Only scales if there is a 25 pixel difference in the window difference
+        if abs(VideoFrame.image_width - self.winfo_width() // 3) < 25:
             return
 
         self.setup_image_dimensions()
 
-        for video in self.video_images:
-            video.cget("image").configure(size=(self.image_width, self.image_height))
+        for image_label in self.video_images:
+            image_label.cget("image").configure(
+                size=(VideoFrame.image_width, VideoFrame.image_height)
+            )
 
     def on_video_click(self, event, video_frame: ctk.CTkFrame):
         """
@@ -52,6 +53,7 @@ class VideoDisplayFrame(ctk.CTkScrollableFrame):
         - video_frame: The video frame of the clicked thumbnail
         """
 
+        print(video_frame)
         for frame in self.video_frames:
             frame.configure(border_color="white")
 
@@ -70,27 +72,15 @@ class VideoDisplayFrame(ctk.CTkScrollableFrame):
         self.setup_image_dimensions()
 
         for index, video in enumerate(videos):
-            video_frame = ctk.CTkFrame(master=self, border_width=2, border_color="white")
-
-            image = Image.open(urlopen(video.thumbnail_url))  # Troll
-            image_ctk = ctk.CTkImage(
-                light_image=image, dark_image=image, size=(self.image_width, self.image_height)
-            )
-            thumbnail_label = ctk.CTkLabel(master=video_frame, image=image_ctk, text="")
-            thumbnail_label.grid(row=0, column=0, padx=2, pady=2)
-
-            title_label = ctk.CTkLabel(
-                master=video_frame, text=video.title, wraplength=180
-            )
-            title_label.grid(row=1, column=0, padx=2, pady=2)
+            video_frame = VideoFrame(master=self, youtube_object=video)
 
             video_frame.grid(row=index // 3, column=index % 3, padx=5, pady=5)
             print(f"Row: {index // 3} | Column: {index % 3}")
 
-            self.video_images.append(thumbnail_label)
+            self.video_images.append(video_frame.thumbnail_label)
             self.video_frames.append(video_frame)
 
-            thumbnail_label.bind(
+            video_frame.thumbnail_label.bind(
                 "<Button-1>",
                 command=lambda event, frame=video_frame: self.on_video_click(event, frame),
             )
@@ -100,4 +90,7 @@ class VideoDisplayFrame(ctk.CTkScrollableFrame):
         Deletes all the videos label objects within a frame
         """
         for video in self.video_frames:
+            video.thumbnail_label.unbind("<Button-1>")
             video.destroy()
+        self.video_frames.clear()
+        self.update()
