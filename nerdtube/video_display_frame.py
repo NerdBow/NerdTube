@@ -69,7 +69,7 @@ class VideoDisplayFrame(ctk.CTkScrollableFrame):
 
         video_frame.configure(border_color=("#5CEEFF"))
         self.selected_video_frame.selected_video = video_frame
-        self.selected_video_frame.set_image()
+        self.selected_video_frame.set_video_info()
         print(event)
         print(video_frame.winfo_children()[1].cget("text"))
 
