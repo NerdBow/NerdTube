@@ -11,7 +11,7 @@ class SearchFrame(ctk.CTkFrame):
     def __init__(self, master: ctk.CTk) -> None:
         super().__init__(master)
 
-        self.master = master
+        self.selected_video_frame = None
 
         self.grid_columnconfigure((0), weight=1)
         self.grid_rowconfigure((0), weight=0)
@@ -24,11 +24,12 @@ class SearchFrame(ctk.CTkFrame):
         self.video_display_frame = VideoDisplayFrame(master=self)
         self.video_display_frame.grid(row=1, column=0, padx=20, pady=20, sticky="nsew")
 
-    def setup(self):
+    def setup(self, selected_video_frame):
         """
         Setups the image dimensions of the videos to display
         """
-        self.video_display_frame.setup_image_dimensions()
+        self.selected_video_frame = selected_video_frame
+        self.video_display_frame.setup(selected_video_frame)
 
     def search(self, event) -> None:
         """
