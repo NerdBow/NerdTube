@@ -10,11 +10,21 @@ class VideoDisplayFrame(ctk.CTkScrollableFrame):
     def __init__(self, master: ctk.CTkFrame) -> None:
         super().__init__(master)
 
+        self.selected_video_frame = None
+
         self.grid_columnconfigure((0, 1, 2), weight=1)
         self.grid_rowconfigure((0, 1, 2, 3, 4, 5, 6), weight=1)
 
         self.video_images = []
         self.video_frames = []
+
+    def setup(self, selected_video_frame: ctk.CTkFrame):
+        """
+        Setups the image dimensions for the thumbnails of videos depending on the window size
+        """
+
+        self.selected_video_frame = selected_video_frame
+        self.setup_image_dimensions()
 
     def setup_image_dimensions(self):
         """
@@ -58,6 +68,8 @@ class VideoDisplayFrame(ctk.CTkScrollableFrame):
             frame.configure(border_color="white")
 
         video_frame.configure(border_color=("#5CEEFF"))
+        self.selected_video_frame.selected_video = video_frame
+        self.selected_video_frame.set_image()
         print(event)
         print(video_frame.winfo_children()[1].cget("text"))
 
