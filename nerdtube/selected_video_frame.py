@@ -34,9 +34,9 @@ class SelectedVideoFrame(ctk.CTkFrame):
         self._thumbnail_label.configure(image=self._selected_video.thumbnail_image)
 
     @property
-    def selected_video(self):
+    def selected_video(self) -> VideoFrame:
         return self._selected_video
 
     @selected_video.setter
-    def selected_video(self, value):
+    def selected_video(self, value) -> None:
         self._selected_video = value
