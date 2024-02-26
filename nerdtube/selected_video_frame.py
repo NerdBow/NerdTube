@@ -25,7 +25,7 @@ class SelectedVideoFrame(ctk.CTkFrame):
         self._thumbnail_label.grid(row=1, column=0, rowspan=5, sticky="nsew")
 
         self._video_title_label = ctk.CTkLabel(
-            master=self, text="Video Title:", anchor="w", font=self._font, wraplength=200
+            master=self, text="Video Title", anchor="center", font=self._font, wraplength=250
         )
         self._video_title_label.grid(row=7, column=0, sticky="ew")
 
@@ -39,9 +39,9 @@ class SelectedVideoFrame(ctk.CTkFrame):
         Set the frame's labels on video infomation to those of the selected_video attribute
         """
         self._thumbnail_label.configure(image=self._selected_video.thumbnail_image)
-        self._video_title_label.configure(text=self._selected_video.youtube_object.title)
+        self._video_title_label.configure(text=f"{self._selected_video.youtube_object.title}")
         self._video_length_label.configure(
-            text=f"{(self._selected_video.youtube_object.length // 3600):02d}:{((self._selected_video.youtube_object.length % 3600) // 60):02d}:{((self._selected_video.youtube_object.length % 3600) % 60):02d}"
+            text=f"Length: {(self._selected_video.youtube_object.length // 3600):02d}:{((self._selected_video.youtube_object.length % 3600) // 60):02d}:{((self._selected_video.youtube_object.length % 3600) % 60):02d}"
         )
 
     @property
