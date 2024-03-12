@@ -1,6 +1,7 @@
 import customtkinter
 from selected_video_frame import SelectedVideoFrame
 from search_frame import SearchFrame
+from button_frame import ButtonFrame
 
 
 class App(customtkinter.CTk):
@@ -22,6 +23,9 @@ class App(customtkinter.CTk):
 
         self.selected_video_frame = SelectedVideoFrame(self)
         self.selected_video_frame.grid(row=0, column=2, padx=20, pady=20, columnspan=1, sticky="nwes")
+
+        self.button_frame = ButtonFrame(self)
+        self.button_frame.grid(row=1, column=2, padx=20, pady=20, columnspan=1, sticky="nwes")
 
         self.bind("<Configure>", self.resize)
 
